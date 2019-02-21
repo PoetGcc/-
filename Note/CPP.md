@@ -693,4 +693,129 @@ Line length : 101
 ```
 ***
 
-**-1**
+## 友元函数
+
+```cpp
+
+```
+
+**结果**
+
+```xml
+
+```
+
+***
+
+## 友元函数
+
+```cpp
+#include <iostream>
+
+using namespace std;
+
+/* 
+ * 友元函数 ，没有指针 
+ * 类的友元函数是定义在类外部，但有权访问类的所有私有（private）成员和保护（protected）成员。
+ * 尽管友元函数的原型有在类的定义中出现过，但是友元函数并不是成员函数
+ * 友元可以是一个函数，该函数被称为友元函数；友元也可以是一个类，该类被称为友元类
+ * 在这种情况下，整个类及其所有成员都是友元。
+ * 如果要声明函数为一个类的友元，需要在类定义中该函数原型前使用关键字 friend
+ */
+
+/*
+ * 友元函数的使用
+ * 因为友元函数没有this指针，则参数要有三种情况：
+ * 要访问非static成员时，需要对象做参数；
+ * 要访问static成员或全局变量时，则不需要对象做参数；
+ * 如果做参数的对象是全局对象，则不需要对象做参数.
+ * 可以直接调用友元函数，不需要通过对象或指针
+ */
+
+/* Box 类 */
+class Box
+{
+	double width;
+
+public:
+	friend void printWidth(Box box);
+	void setWidth(double width);
+};
+
+/* 成员方法声明 */
+void Box :: setWidth(double wid)
+{
+	width = wid;
+}
+
+/* !!! 不是任何类的成员方法 */
+void printWidth(Box box)
+{
+	// printWidth() 是 Box 的友元函数，可以直接访问 Box 的任何成员
+	cout << "width of box : " << box.width << endl;
+}
+
+int main(int argc, char const *argv[])
+{
+	Box box;
+	box.setWidth(101.1);
+	printWidth(box);
+	return 0;
+}
+```
+
+**结果**
+
+```xml
+width of box : 101.1
+```
+
+***
+
+## 内联函数
+
+```cpp
+#include <iostream>
+
+using namespace std;
+
+/* 内联函数 */
+inline int Max(int x , int y)
+{
+	return (x > y)? x : y;
+}
+
+
+int main(int argc, char const *argv[])
+{
+	cout << "Max (20,10): " << Max(20,10) << endl;
+	cout << "Max (0,200): " << Max(0,200) << endl;
+	cout << "Max (100,1010): " << Max(100,1010) << endl;
+	return 0;
+}
+```
+
+**结果**
+
+```xml
+Max (20,10): 20
+Max (0,200): 200
+Max (100,1010): 1010
+```
+
+***
+
+## **-1**
+
+```cpp
+
+```
+
+**结果**
+
+```xml
+
+```
+
+
+
