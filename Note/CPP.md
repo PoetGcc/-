@@ -691,19 +691,6 @@ Line length : 101
 释放内存
 释放内存
 ```
-***
-
-## 友元函数
-
-```cpp
-
-```
-
-**结果**
-
-```xml
-
-```
 
 ***
 
@@ -801,6 +788,217 @@ int main(int argc, char const *argv[])
 Max (20,10): 20
 Max (0,200): 200
 Max (100,1010): 1010
+```
+
+***
+
+## This
+
+```cpp
+#include <iostream>
+
+using namespace std;
+
+/* this 的目的总是指向“这个”对象，是一个常量指针 */
+class Box
+{
+public:
+	Box(double wid){
+		width = wid;
+	}
+	~Box(){};
+	Box* get_address()
+	{
+		return this;
+	}
+	double widthValue()
+	{
+		return width;
+	}
+	int compare(Box box)
+    {
+        return this->widthValue() >= box.widthValue();
+    }
+
+private:
+	double width;	
+};
+
+int main(int argc, char const *argv[])
+{
+	Box box1(2.3);
+	Box box2(3.4);
+
+	// Box* 定义指针p接受对象box的get_address()成员函数的返回值，并打印
+	// this 指针的类型可理解为 Box*
+    // 得到两个地址分别为 box1 和 box2 对象的地址
+	Box* p = box1.get_address();
+	cout << p << endl;
+	cout << "box1.width = " << p->widthValue() << endl;
+	cout << endl;
+
+	p = box2.get_address();
+	cout << p << endl; 
+	cout << "box2.width = " << p->widthValue() << endl;
+	cout << endl;
+
+	// 比较
+	if (box1.compare(box2))
+	{
+		cout << "box1 比 box2 大或相等" << endl;
+	} 
+	else 
+	{
+		cout << "box1 比 box2 小" << endl;
+	}
+	return 0;
+}
+```
+
+**结果**
+
+```xml
+0x7ffeecfbdb88
+box1.width = 2.3
+
+0x7ffeecfbdb80
+box2.width = 3.4
+
+box1 比 box2 小
+```
+
+***
+
+## 静态成员
+
+```cpp
+#include <iostream>
+
+using namespace std;
+
+/*静态成员变量*/
+class Box
+{
+public:
+	static int nums;
+	Box(){
+		// 创建一次成员 nums 加一次
+		nums ++;
+	}
+	~Box(){
+		nums --;
+		cout << "Destory , nums = " << nums << endl;
+	}
+	static int getObjectNums()
+	{
+		return nums;
+	}
+	
+};
+
+/* 初始化 Box 的静态成员 */
+int Box :: nums = 0;
+
+int main(int argc, char const *argv[])
+{
+
+	cout << "Box :: getObjectNums() -> Total objects = " << Box :: getObjectNums() << endl;
+
+	Box box1;
+	Box box2;
+
+	cout << "Box :: getObjectNums() -> Total objects = " << Box :: getObjectNums() << endl;
+
+	Box box3;
+
+	cout << "Total objects = " << Box :: nums << endl;
+	return 0;
+}
+```
+
+**结果**
+
+```xml
+Box :: getObjectNums() -> Total objects = 0
+Box :: getObjectNums() -> Total objects = 2
+Total objects = 3
+Destory , nums = 2
+Destory , nums = 1
+Destory , nums = 0
+```
+
+***
+
+## 继承
+
+```cpp
+#include <iostream>
+
+using namespace std;
+
+/* 基类 */
+class BaseShape
+{
+public:
+	void setWidth(int w)
+	{
+		width = w;
+	}
+	void setHight(int h)
+	{
+		hight = h;
+	}
+
+/* 派生类可见 */
+protected:
+	int width;
+	int hight;
+};
+
+/*长方形*/
+class Rectangle : public BaseShape
+{
+public:
+	int getArea()
+	{
+		return (width * hight);
+	}
+};
+
+/* 三角形 width 为宽，hight 为高*/
+class Triangle : public BaseShape
+{
+public:
+	int getArea()
+	{
+		return (width * hight / 2);
+	}
+};
+
+int main(int argc, char const *argv[])
+{
+	// 长方形
+	Rectangle rect;
+	rect.setWidth(6);
+	rect.setHight(3);
+	cout << "Rectangle area = " << rect.getArea() << endl;
+
+	// 三角形
+	Triangle tria;
+	tria.setWidth(2);
+	tria.setHight(4);
+	cout << "Triangle area = " << tria.getArea() << endl;
+	return 0;
+}
+
+
+```
+
+**结果**
+
+```xml
+Rectangle area = 18
+Triangle area = 4
 ```
 
 ***
