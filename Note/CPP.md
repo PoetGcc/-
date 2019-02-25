@@ -1244,15 +1244,17 @@ using namespace std;
 /* 第 1 个命名空间 */
 namespace first_space
 {
-	void func(){
+	void func()
+	{
       cout << "This is first_space" << endl;
-   }
+    }
 }
 
 /* 第 2 个命名空间 */
 namespace second_space
 {
-	void func(){
+   void func()
+   {
       cout << "This is second_space" << endl;
    }
 }
