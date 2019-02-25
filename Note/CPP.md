@@ -1247,7 +1247,7 @@ namespace first_space
 	void func()
 	{
       cout << "This is first_space" << endl;
-    }
+	}
 }
 
 /* 第 2 个命名空间 */
