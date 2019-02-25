@@ -1003,6 +1003,279 @@ Triangle area = 4
 
 ***
 
+## 重载
+
+```cpp
+#include <iostream>
+
+using namespace std;
+
+/* 重载 + 运算符 */
+class Box
+{
+public:
+	void setWidth(double wid)
+	{
+		width = wid;
+	}
+
+	double getWidth()
+	{
+		return width;
+	}
+	/* 重载+运算符，将两个Box对象加起来 */
+	Box operator+(const Box& b)
+	{
+		Box box;
+		box.width = this->width + b.width;
+		return box;
+	}
+
+private:
+	double width;
+};
+
+int main(int argc, char const *argv[])
+{
+	Box mac;
+	mac.setWidth(1.1);
+	Box win;
+	win.setWidth(1.2);
+	Box android;
+	android = win + mac;
+	cout << "Width of android : " << android.getWidth() << endl;
+	return 0;
+}
+```
+
+**结果**
+
+```xml
+Width of android : 2.3
+```
+
+***
+
+## 多态
+
+```cpp
+#include <iostream>
+
+using namespace std;
+
+/* 多态 : C++ 多态意味着调用成员函数时，会根据调用函数的对象的类型来执行不同的函数 */
+
+/* 基类 */
+class Shape
+{
+protected:
+	int width,height;
+public:
+	Shape(int w = 0, int h = 0)
+	{
+		width = w;
+		height = h;
+	}
+
+    /* 虚函数 : 在派生类中重新定义基类中定义的虚函数时，会告诉编译器不要静态链接到该函数 */
+	virtual void area()
+	{
+		cout << "Parent class area :"<< 0 <<endl;
+	}
+	
+};
+
+/* 矩形 */
+class Rectangle : public Shape
+{
+public:
+	Rectangle(int w = 0, int h = 0 ) : Shape(w,h) { }
+	void area ()
+    { 
+        cout << "Rectangle class area : "<< (width * height) <<endl;
+    }
+};
+
+/* 三角形 */
+class Triangle : public Shape
+{
+public:
+	Triangle(int w = 0, int h = 0 ) : Shape(w,h) { }
+	void area ()
+    { 
+        cout << "Triangle  class area : " << (width * height / 2) <<endl;
+    }
+};
+
+int main(int argc, char const *argv[])
+{
+	Shape *shape;
+	Rectangle rect(10,7);
+	Triangle tria(10,8);
+
+	// 利用矩形地址
+	shape = &rect;
+	shape->area();
+
+	// 利用三角形地址
+	shape = &tria;
+	shape->area();
+	return 0;
+}
+```
+
+**结果**
+
+```xml
+Rectangle class area : 70
+Triangle  class area : 40
+```
+
+***
+
+## 异常
+
+```cpp
+#include <iostream>
+using namespace std;
+
+/* 异常：除法 */
+double division(double a, double b);
+
+int main(int argc, char const *argv[])
+{
+	double d = division(5.6, 2.8);
+	cout << d << endl;
+
+	try
+	{
+		d = division(5.6, 0);
+	}
+	catch(const char* msg)
+	{
+		cout << msg << endl;
+	}
+	return 0;
+}
+
+/* a/b, b = 0 时抛异常 */
+double division(double a, double b)
+{
+	if (b == 0)
+	{
+		throw "除数不能为 0 !!!";
+	}
+	return (a / b);
+}
+```
+
+**结果**
+
+```xml
+2
+除数不能为 0 !!!
+```
+
+***
+
+## 动态内存
+
+```cpp
+#include <iostream>
+
+using namespace std;
+
+class Dynamic
+{
+public:
+	Dynamic()
+	{
+		cout << "Dynamic -> 调用构造函数！" <<endl; 
+	}
+	~Dynamic()
+	{
+		cout << "Dynamic -> 调用析造函数！" <<endl; 
+	}
+};
+
+/*动态分配内存 : new , delete */
+int main(int argc, char const *argv[])
+{
+	// 初始化 NULL 指针
+	double *d = NULL;
+	// 为变量请求内存
+	d = new double;
+	// 在分配的地址存值
+	*d = 3.1415926;
+	cout << "Value of d = " << *d << endl;
+	// 释放内存
+	delete d;
+
+	// 对象
+	Dynamic* dynamicArray  = new Dynamic[4];
+	delete [] dynamicArray;
+	return 0;
+}
+```
+
+**结果**
+
+```xml
+Value of d = 3.14159
+Dynamic -> 调用构造函数！
+Dynamic -> 调用构造函数！
+Dynamic -> 调用构造函数！
+Dynamic -> 调用构造函数！
+Dynamic -> 调用析造函数！
+Dynamic -> 调用析造函数！
+Dynamic -> 调用析造函数！
+Dynamic -> 调用析造函数！
+```
+
+***
+
+## 命名空间
+
+```cpp
+#include <iostream>
+
+using namespace std;
+
+/* 第 1 个命名空间 */
+namespace first_space
+{
+	void func(){
+      cout << "This is first_space" << endl;
+   }
+}
+
+/* 第 2 个命名空间 */
+namespace second_space
+{
+	void func(){
+      cout << "This is second_space" << endl;
+   }
+}
+
+int main(int argc, char const *argv[])
+{
+	// 1
+	first_space :: func();
+	// 2 
+	second_space :: func();
+	return 0;
+}
+```
+
+**结果**
+
+```xml
+This is first_space
+This is second_space
+```
+
+***
+
 ## **-1**
 
 ```cpp
