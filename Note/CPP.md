@@ -1388,15 +1388,15 @@ void class_template()
 
 		// 操作 int 栈
 		intStack.push(7); 
-		cout << intStack.top() <<endl; 
+		cout << intStack.top() <<endl;
 
-        // 操作 string 类型的栈 
+		// 操作 string 类型的栈 
 		strStack.push("hello"); 
 		cout << strStack.top() << std::endl;
 
-        // 出栈
+		// 出栈
+		strStack.pop();
 		strStack.pop(); 
-    	strStack.pop(); 
 	}
 	catch(exception const& ex)
 	{
