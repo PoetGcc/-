@@ -1278,6 +1278,149 @@ This is second_space
 
 ***
 
+## 模版
+
+```cpp
+#include <iostream>
+#include <vector>
+#include <cstdlib>
+#include <string>
+#include <stdexcept>
+
+using namespace std;
+
+/* 函数模版 */
+template <typename T>
+inline T const& Max (T const& a, T const& b)
+{
+	return a <= b ? b : a;
+} 
+void method_template();
+
+/* 类模版 */
+template <class  T>
+class Stack
+{
+private:
+	// 元素 
+	vector<T> elems;     
+public:
+	// 入栈
+	void push(T const&);
+	// 出栈
+	void pop();
+	// 栈顶
+	T top() const;
+	// 是否为空
+	bool empty() const
+	{
+		return elems.empty();
+	}
+};
+
+/* 入栈 */
+template <class T>
+void Stack<T> :: push(T const& elem)
+{
+	// 追加传入元素的副本
+	elems.push_back(elem);
+} 
+
+/* 出栈 */
+template <class T>
+void Stack<T> :: pop()
+{
+	if (elems.empty()) { 
+        throw out_of_range("Stack<>::pop(): empty stack"); 
+    }
+    // 删除最后一个元素
+    elems.pop_back();  
+}
+
+/* 栈顶 */
+template <class T>
+T Stack<T> :: top() const
+{
+	if (elems.empty()) { 
+        throw out_of_range("Stack<>::pop(): empty stack"); 
+    }
+    // 返回最后一个元素
+    return elems.back();  
+}
+
+void class_template();
+
+int main(int argc, char const *argv[])
+{
+	// 函数
+	method_template();
+
+	// 类
+	class_template();
+	return 0;
+}
+
+void method_template()
+{
+	cout << "Method Template" << endl;
+	int i = 2;
+	int j = 4;
+	cout << "Max(i, j): " << Max(i, j) << endl; 
+
+	double f1 = 13.5; 
+    double f2 = 20.7; 
+    cout << "Max(f1, f2): " << Max(f1, f2) << endl; 
+
+    string s1 = "Hello"; 
+    string s2 = "World"; 
+    cout << "Max(s1, s2): " << Max(s1, s2) << endl; 
+}
+
+void class_template()
+{
+	try
+	{
+		cout << "\nClass Template" << endl;
+		// int Stack
+		Stack<int> intStack;
+		// string Stack
+		Stack<string> strStack;
+
+		// 操作 int 栈
+		intStack.push(7); 
+        cout << intStack.top() <<endl; 
+
+        // 操作 string 类型的栈 
+        strStack.push("hello"); 
+        cout << strStack.top() << std::endl; 
+
+        // 出栈
+        strStack.pop(); 
+        strStack.pop(); 
+	}
+	catch(exception const& ex)
+	{
+		cerr << "Exception: " << ex.what() <<endl; 
+	}
+}
+```
+
+**结果**
+
+```xml
+Method Template
+Max(i, j): 4
+Max(f1, f2): 20.7
+Max(s1, s2): World
+
+Class Template
+7
+hello
+Exception: Stack<>::pop(): empty stack
+```
+
+***
+
 ## **-1**
 
 ```cpp
