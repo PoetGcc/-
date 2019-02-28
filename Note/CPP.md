@@ -1421,6 +1421,89 @@ Exception: Stack<>::pop(): empty stack
 
 ***
 
+## 预处理（宏）
+
+```cpp
+#include <iostream>
+#include <vector>
+using namespace std;
+
+/* 参数宏 */
+#define MIN(a, b) (a < b ? a : b)
+
+int main(int argc, char const *argv[])
+{
+	int i , j;
+	i = 3;
+	j = 300;
+	cout << "Minner is : " << MIN(i, j) << endl;
+	return 0;
+}
+```
+
+**结果**
+
+```xml
+Minner is : 3
+```
+
+***
+
+## 信号处理
+
+```cpp
+#include <iostream>
+#include <csignal>
+#include <unistd.h>
+
+using namespace std;
+
+/* 信号处理 */
+void signalHanlder(int signum);
+
+int main(int argc, char const *argv[])
+{
+	cout << "SIGINT is : " << SIGINT << endl;
+	int i = 0;
+	// 注册信号 SIGINT 和 信号处理
+	signal(SIGINT, signalHanlder);
+
+	while(true)
+	{
+		cout << "Going to sleep ... " << endl;
+		if (i == 3)
+		{
+			// 生成信号
+			raise(SIGINT);
+		}
+		// 睡眠，区分大小写 : Windows 毫秒，Linux 秒
+		sleep(1);
+		i ++;
+	}
+	return 0;
+}
+
+/* 退出处理 */
+void signalHanlder(int signum)
+{
+	cout << "Interrupt signal (" << signum << ") received.\n";
+ 	// 清理并关闭，终止程序  
+ 	exit(signum);  
+}
+```
+
+**结果**
+
+```xml
+SIGINT is : 2
+Going to sleep ... 
+Going to sleep ... 
+Going to sleep ... 
+Going to sleep ... 
+Interrupt signal (2) received.
+```
+
+***
 
 ## **-1**
 
